@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cookingdrama.CookingController">
+    <center>
+        <HBox prefHeight="100.0" prefWidth="200.0" spacing="50.0" BorderPane.alignment="CENTER">
+            <children>
+            <VBox alignment="TOP_CENTER" prefHeight="180.0" prefWidth="333.0">
+               <children>
+                  <Text fx:id="recipeToMakeText" stroke="WHITE" strokeType="OUTSIDE">
+                     <font>
+                        <Font name="Calisto MT Italic" size="17.0" />
+                     </font>
+                  </Text>
+                      <GridPane alignment="CENTER" prefHeight="196.0" prefWidth="322.0">
+                          <columnConstraints>
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                     <children>
+                        <ImageView fx:id="chickenImage" fitHeight="57.0" fitWidth="76.0" onMouseClicked="#chickenClickedHandler" opacity="0.5" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                           <image>
+                              <Image url="@FoodIcons/chicken.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <ImageView fx:id="seafoodImage" fitHeight="57.0" fitWidth="76.0" onMouseClicked="#seafoodClickedHandler" opacity="0.5" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <image>
+                              <Image url="@FoodIcons/salmon.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <ImageView fx:id="eggsImage" fitHeight="57.0" fitWidth="76.0" onMouseClicked="#eggsClickedHandler" opacity="0.5" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <image>
+                              <Image url="@FoodIcons/egg.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <ImageView fx:id="pastaImage" fitHeight="57.0" fitWidth="76.0" onMouseClicked="#pastaClickedHandler" opacity="0.5" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="2">
+                           <image>
+                              <Image url="@FoodIcons/fusilli.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <ImageView fx:id="cheeseImage" fitHeight="57.0" fitWidth="76.0" onMouseClicked="#cheeseClickedHandler" opacity="0.5" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                           <image>
+                              <Image url="@FoodIcons/cheese.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <ImageView fx:id="potatoesImage" fitHeight="57.0" fitWidth="76.0" onMouseClicked="#potatoesClickedHandler" opacity="0.5" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                           <image>
+                              <Image url="@FoodIcons/potato.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <ImageView fx:id="sauceImage" fitHeight="57.0" fitWidth="76.0" onMouseClicked="#sauceClickedHandler" opacity="0.5" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="3">
+                           <image>
+                              <Image url="@FoodIcons/tomato-sauce.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <ImageView fx:id="butterImage" fitHeight="57.0" fitWidth="76.0" onMouseClicked="#butterClickedHandler" opacity="0.5" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <image>
+                              <Image url="@FoodIcons/butter.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                        <ImageView fx:id="seasoningImage" fitHeight="57.0" fitWidth="76.0" onMouseClicked="#seasoningClickedHandler" opacity="0.5" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                           <image>
+                              <Image url="@FoodIcons/spice.png" />
+                           </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </ImageView>
+                     </children>
+                      </GridPane>
+               </children>
+            </VBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Time" />
+                        <Slider fx:id="timeSlider" majorTickUnit="15.0" max="90.0" orientation="VERTICAL" prefHeight="148.0" prefWidth="41.0" showTickLabels="true" showTickMarks="true" />
+                        <Text fx:id="timeDisplayText" strokeType="OUTSIDE" strokeWidth="0.0" text="0 min." />
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature" />
+                        <Slider fx:id="tempSlider" majorTickUnit="50.0" max="400.0" minorTickCount="5" orientation="VERTICAL" prefHeight="149.0" prefWidth="14.0" showTickLabels="true" showTickMarks="true" />
+                        <Text fx:id="tempDisplayText" strokeType="OUTSIDE" strokeWidth="0.0" text="0 °F" />
+                    </children>
+                </VBox>
+            </children>
+            <padding>
+                <Insets bottom="30.0" top="30.0" />
+            </padding>
+        </HBox>
+    </center>
+    <top>
+        <Text fill="#dddddd" strokeType="OUTSIDE" strokeWidth="0.0" text="Time to Cook!" underline="true" BorderPane.alignment="CENTER">
+            <BorderPane.margin>
+                <Insets top="10.0" />
+            </BorderPane.margin>
+            <font>
+                <Font name="Calisto MT Bold Italic" size="42.0" />
+            </font>
+        </Text>
+    </top>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="74.0" prefWidth="600.0" spacing="40.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" onAction="#viewRecipesHandler" text="View Recipes" />
+              <Button mnemonicParsing="false" onAction="#continueButtonHandler" text="Finished" />
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>

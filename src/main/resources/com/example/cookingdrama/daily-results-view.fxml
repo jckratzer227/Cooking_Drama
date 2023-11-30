@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.cookingdrama.DailyResultsController">
+   <top>
+      <Text stroke="WHITE" strokeType="OUTSIDE" strokeWidth="2.0" text="You made it to the end of the day!" underline="true" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Calisto MT Bold Italic" size="36.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets top="10.0" />
+         </BorderPane.margin>
+      </Text>
+   </top>
+   <center>
+      <VBox alignment="TOP_CENTER" prefHeight="339.0" prefWidth="600.0" spacing="15.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text fx:id="happyCustomersText" strokeType="OUTSIDE" strokeWidth="0.0" text="Happy Customers: ">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <font>
+                  <Font name="Calisto MT Italic" size="30.0" />
+               </font>
+            </Text>
+            <Text fx:id="unhappyCustomersText" strokeType="OUTSIDE" strokeWidth="0.0" text="Unhappy Customers: ">
+               <font>
+                  <Font name="Calisto MT Italic" size="30.0" />
+               </font>
+            </Text>
+            <HBox alignment="CENTER" prefHeight="64.0" prefWidth="600.0">
+               <children>
+                  <Text fx:id="coinsEarnedText" strokeType="OUTSIDE" strokeWidth="0.0" text="Coins earned: ">
+                     <font>
+                        <Font name="Calisto MT Italic" size="30.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@cdcurrencycoin.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="64.0" prefWidth="600.0">
+               <children>
+                  <Text fx:id="totalCoinsText" strokeType="OUTSIDE" strokeWidth="0.0" text="Total Coins: ">
+                     <font>
+                        <Font name="Calisto MT Italic" size="30.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@cdcurrencycoin.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <Button mnemonicParsing="false" onAction="#continueButtonHandler" text="Continue">
+               <VBox.margin>
+                  <Insets bottom="15.0" />
+               </VBox.margin>
+            </Button>
+         </children>
+         <BorderPane.margin>
+            <Insets top="40.0" />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+</BorderPane>
