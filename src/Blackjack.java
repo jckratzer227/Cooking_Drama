@@ -1,138 +1,71 @@
+import javax.sound.sampled.LineUnavailableException;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import java.io.IOException;
+import java.util.*;
 
-public class Blackjack extends Application {
+public class Blackjack {
+
+    /*
+    Testing purposes
+     */
+
+    static int[] testCards = {5,3,6,4,0};
+    static int cardIndex = 0;
+    /*
+    end testing stuff
+     */
+
     public static int playerCount = 0;
     public static int dealerCount = 0;
     public static int cardValue;
-    public static boolean bust = false;
-    public static boolean win = false;
-    public static boolean lose = false;
-    public static boolean draw = false;
+
+    ///////////////// Game States /////////////////
+    public static boolean gameOverTriggered;
+    public static boolean dd = false;
+    public static boolean draw;
     public static boolean dealerTurn;
     public static boolean playerTurn;
     public static boolean playerIsAce;
     public static boolean dealerIsAce;
+    public static boolean changedPlayerCount;
+    public static boolean changedDealerCount;
     public static boolean playerStand = false;
-    public static boolean roundOver = false;
-    public static boolean playAgain = false;
-    public static boolean changeMode = false;
-    /*
-    gameState keeps track of what part of the Blackjack round you are currently in to switch between phases (stages):
-    ( Initial Betting, Player play, Dealer play, Game Over, Play Again? / Round Reset )
-     */
-    private char gameState = 0;
+    public static boolean changed = false;
     public static int min = 0;
     public static int max = 51;
-    public static int playerCash = 100;
+    public static int playerCash = 500;
     public static int betAmount = 10;
     public static int aceCount;
     public static int Ace = 0;
-    public static int counter = 0;
-    public static int elementPointer1 = 0;
-    public static int elementPointer2 = 0;
+    public static int playerAceCount;
+    public static int dealerAceCount;
+    public static int playerCardCounter;
+    public static int dealerCardCounter;
+    public static String picChoice;
+    public static String faceDownCard;
     public static ArrayList<ArrayList<String>> values = new ArrayList<>();
     public static List<Integer> discard = new ArrayList<>();
     public static ArrayList<String> playerHand = new ArrayList<>();
     public static ArrayList<String> dealerHand = new ArrayList<>();
     //Below are the scenes for different stages of the round.
-    public static Stage stage;
-    static Scene betting;
-    static Scene playerPlay;
-    static Scene dealerPlay;
-    static Scene endOfRound;
-    public static Scene gameModeMenu;
-    public static void display(){
-        Main.window.setScene(gameModeMenu);
-        VBox menu = new VBox(20);
-        gameModeMenu = new Scene(menu, 1280,720);
-        Scene gameModeMenu = new Scene(menu, 1280, 720);
-        Main.window.setTitle("Blackjack Main Menu");
-        Main.window.show();
-    }
-    public class playerOptions{
 
-    }
-    public class bettingScene {
+    public static void roundStart() throws LineUnavailableException, IOException {
 
-    }
 
-    public class endingScreen{
+        ///////////////// - Game Variables - /////////////////
+        playerStand = false;
+        playerCardCounter = 0;
+        dealerCardCounter = 0;
+        playerAceCount = 0;
+        dealerAceCount = 0;
+        playerIsAce = false;
+        dealerIsAce = false;
+        changedDealerCount = false;
+        changedPlayerCount = false;
+        gameOverTriggered = false;
+        //////////////////////////////////////////////////////
 
-    }
-    @Override
-    //This method will swap between stages of each round of Blackjack.
-    public void start(Stage blackJack) throws Exception {
-        if (playerTurn){
-            FXMLLoader fxmlLoader = new FXMLLoader(Blackjack.class.getResource("Placeholder.fxml"));
-            Parent root1 = fxmlLoader.load();
-            Scene playerPlay = new Scene(root1);
-            stage.setScene(playerPlay);
-        }
-        if (playerStand){
-            FXMLLoader fxmlLoader = new FXMLLoader(Blackjack.class.getResource("Placeholder1.fxml"));
-            Parent root1 = fxmlLoader.load();
-            Scene dealerPlay = new Scene(root1);
-            stage.setScene(dealerPlay);
-        }
-        if (roundOver){
-            FXMLLoader fxmlLoader = new FXMLLoader(Blackjack.class.getResource("Placeholder2.fxml"));
-            Parent root1 = fxmlLoader.load();
-            Scene endOfRound = new Scene(root1);
-            stage.setScene(endOfRound);
-        }
-        if (playAgain){
-            FXMLLoader fxmlLoader = new FXMLLoader(Blackjack.class.getResource("Placeholder3.fxml"));
-            Parent root1 = fxmlLoader.load();
-            Scene betting = new Scene(root1);
-            stage.setScene(betting);
-        }
-        if (changeMode){
-            stage.setScene(gameModeMenu);
-        }
-    }
-
-    public static void playerChoice(){
-        //Insert buttons and scene layout here
-    }
-    public static void endOfRoundMenu(){
-        //Insert buttons and scene layout here
-    }
-    public static void gameModeMenu(){
-        //Insert buttons and scene layout here
-    }
-    public static void roundStart(){
-        /*Button hit = new Button("Hit");
-        hit.setOnAction((e) -> {
-            hit();
-        });
-        Button stand = new Button("Stand");
-        stand.setOnAction((e) -> {
-            playerStand = true;
-            stand();
-        });
-        Button doubleDown = new Button("Double Down");
-        doubleDown.setOnAction((e) -> {
-            doubleDown();
-        });
-        Button surrender = new Button("Surrender");
-        surrender.setOnAction((e) -> {
-            surrender();
-        });
-
-         */
-        VBox gmLayout = new VBox(20);
         File file = new File("C:\\Users\\jacob\\IdeaProjects\\Cooking Drama\\src\\cardInfoDatabase.csv");
         try {
             Scanner scanner = new Scanner(file);
@@ -144,6 +77,7 @@ public class Blackjack extends Application {
                 values.add(rowValues);
                 //values = rowValues;
             }
+            // TEST CODE START
             for (int rowIndex = 0; rowIndex < values.size(); rowIndex++) {
                 for (int columnIndex = 0; columnIndex < values.get(rowIndex).size(); columnIndex++) {
                     System.out.print(values.get(rowIndex).get(columnIndex) + "\t\t\t");
@@ -163,21 +97,23 @@ public class Blackjack extends Application {
                 }
                 System.out.println();
             }
+            // TEST CODE END
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        draw = false;
+        soundEffect();
         hit();
         hit();
+        draw = true;
+        hit();
+        hit();
+        draw = false;
         if (playerIsAce) {
             System.out.println("Congrats! You have an ace!");
         }
-        draw = true;
-        while (counter < 2){
-            hit();
-            counter++;
-        }
-        draw = false;
-        playerTurn = true;
+        //playerTurn = true;
+
         System.out.println("");
         System.out.println("Player's Card Count: " + playerCount);
         System.out.print("Player's Hand: ");
@@ -197,124 +133,14 @@ public class Blackjack extends Application {
         for (int columnIndex = 0; columnIndex < discard.size(); columnIndex++){
             System.out.print(discard.get(columnIndex) + ", ");
         }
+
     }
-    public static void main(String[] args) throws Exception {
-        Button playButton = new Button("Play");
-        playButton.setOnAction((e) -> {
-            takeBet();
-        });
+    public static void main(String[] args) throws Exception {}
 
-        Button howToPlay = new Button("How to Play");
-        howToPlay.setOnAction((e) -> {
-            howToPlay();
-        });
-        Button exit = new Button("EXIT");
-        exit.setOnAction((e) -> {
-            exit();
-        });
-        takeBet();
-        roundStart();
-    }
-    public static void takeBet(){
-        Button upBet = new Button("+");
-        upBet.setOnAction((e) -> {
-            betAmount = betAmount + 10;
-            System.out.println("Bet Amount: " + betAmount);
-        });
-        Button downBet = new Button("-");
-        downBet.setOnAction((e) -> {
-            betAmount = betAmount - 10;
-            System.out.println("Bet Amount: " + betAmount);
-        });
-        Button placeBet = new Button("Place Bet");
-        placeBet.setOnAction((e) -> {
-            playerCash = playerCash - betAmount;
-            playerTurn = true;
-            roundStart();
-        });
-        Button exit = new Button("Exit");
-        exit.setOnAction((e) -> {
-            betAmount = betAmount - 10;
-        });
-
-
-        System.out.println("Place your bet!");
-        if (betAmount > playerCash){
-            System.out.println("Bet Denied! Player has insufficient funds.");
-        }
-        else{
-            playerCash = playerCash - betAmount;
-        }
-    }
-    public static void modeMenuHandler(){
-        // for interactions with mode menu
-        System.out.println("What do you want to do next?");
-        Button shop = new Button("Go to Shop");
-        shop.setOnAction((e) -> {
-            //
-        });
-        Button kitchen = new Button("Return to Kitchen");
-        kitchen.setOnAction((e) -> {
-
-        });
-        Button mainMenu = new Button("Return to Main Menu");
-        mainMenu.setOnAction((e) -> {
-
-        });
-    }
-    public static void gameOver(){
-        //stage.setScene(endOfRound);
-        // insert fxml file here
-        if (playerCount < 22 && playerCount > dealerCount){
-            win = true;
-        }
-        if (dealerCount < 22 && dealerCount > playerCount){
-            lose = true;
-        }
-        Button yes = new Button("Yes");
-        yes.setOnAction((e) -> {
-            playAgain = true;
-            takeBet();
-        });
-        Button no = new Button("No");
-        no.setOnAction((e) -> {
-            changeMode = true;
-            modeMenuHandler();
-        });
-
-
-        if (win){
-            System.out.println("You Win!");
-            playerCash = playerCash + (betAmount * 2);
-            System.out.println("Play Again?");
-            win = false;
-        }
-        if (lose){
-            System.out.println("You Lose!");
-            System.out.println("Play Again?");
-            lose = false;
-        }
-        else{
-            System.out.println("Draw.");
-            playerCash = playerCash + betAmount;
-        }
-        System.out.println("Play Again?");
-    }
-    public static void stand(){
+    public static void stand() throws LineUnavailableException, IOException {
         playerTurn = false;
         dealerTurn = true;
         dealerAI();
-    }
-    public static void doubleDown(){
-        playerCash = playerCash - betAmount;
-        betAmount = betAmount * 2;
-        hit();
-        gameOver();
-    }
-    public static void surrender(){
-        playerCash = playerCash + (betAmount/2);
-        gameOver();
-
     }
     public static void exit(){
         System.out.println("Are you sure?");
@@ -323,34 +149,63 @@ public class Blackjack extends Application {
         System.out.println("Just place a bet.");
     }
     public static void dealerAI(){
-        System.out.println("PLACEHOLDER");
-        if (dealerCount < 17){
-            draw = true;
+        draw = true;
+        if(dealerCount > playerCount){
+            whoWon();
+        }
+        else if (playerCount < 17){
+            hit();
+        }
+        else if(dealerCount < playerCount && playerCount <= 21 && dealerCount < 17){
+            hit();
+        }
+        else if(playerCount > dealerCount && dealerCount >= 17){
+            whoWon();
+        }
+        else if(playerCount == dealerCount){
+            whoWon();
+        }
+        //else if ()
+        else {
             hit();
             if (dealerCount < 17){
                 hit();
-                if (dealerCount < 17) {
+                if (dealerCount < 17){
                     hit();
-                    if (dealerCount < 17) {
+                    if (dealerCount < 17){
                         hit();
                     }
                 }
             }
         }
-        draw = false;
-        gameOver();
+
+
+
+
     }
-    public static void hit() {
+    public static void hit(){
+        int elementPointer1 = 0;
+        int elementPointer2 = 0;
+        int elementPointer3 = 0;
+        int elementPointer4 = 0;
+        int elementPointer5 = 0;
+        int elementPointer6 = 0;
+        int elementPointer7 = 0;
+        int elementPointer8 = 0;
+        int elementPointer9 = 0;
+
         System.out.println("");
         System.out.println("...dealing card");
         Random random = new Random();
         /* These nested for loops ensure that the same card can't be drawn twice from the deck.
-        --- Here it will draw up to three times for each card picked after the first card to drastically reduce ---
-        --- the chances of the same card that has already been drawn being redrawn. A redraw is only done if    ---
-        --- the card that is initially drawn matches with any of those passed into the discard integer array    ---
-        --- list which is added to with each subsequent draw.                                                   ---
+        --- Here it will redraw up to seven times for each card picked after the first card to drastically reduce  ---
+        --- the chances of the same card being redrawn. A redraw is only done if the card that is initially drawn ---
+        --- matches with any of those previously drawn which are tracked via the discard array                    ---
          */
+
         int randomCard = random.nextInt(max - min + 1) + min;
+        //int randomCard = testCards[cardIndex++];
+
         for (int columnIndex = 0; columnIndex < discard.size(); columnIndex++){
             if (randomCard == discard.get(elementPointer1)){
                 randomCard = random.nextInt(max - min + 1) + min;
@@ -359,49 +214,218 @@ public class Blackjack extends Application {
                     if(randomCard == discard.get(elementPointer2)){
                         randomCard = random.nextInt(max - min + 1) + min;
                         elementPointer2++;
+                        for (int thirdIndex = 0; thirdIndex < discard.size(); thirdIndex++){
+                            if(randomCard == discard.get(elementPointer3)){
+                                randomCard = random.nextInt(max - min + 1) + min;
+                                elementPointer3++;
+                                for (int fourthIndex = 0; fourthIndex < discard.size(); fourthIndex++){
+                                    if(randomCard == discard.get(elementPointer4)){
+                                        randomCard = random.nextInt(max - min + 1) + min;
+                                        elementPointer4++;
+                                        for (int fifthIndex = 0; fifthIndex < discard.size(); fifthIndex++){
+                                            if(randomCard == discard.get(elementPointer5)){
+                                                randomCard = random.nextInt(max - min + 1) + min;
+                                                elementPointer5++;
+                                                for (int sixthIndex = 0; sixthIndex < discard.size(); sixthIndex++) {
+                                                    if (randomCard == discard.get(elementPointer6)) {
+                                                        randomCard = random.nextInt(max - min + 1) + min;
+                                                        elementPointer6++;
+                                                        for (int seventhIndex = 0; seventhIndex < discard.size(); seventhIndex++) {
+                                                            if (randomCard == discard.get(elementPointer7)) {
+                                                                randomCard = random.nextInt(max - min + 1) + min;
+                                                                elementPointer7++;
+                                                                for (int eighthIndex = 0; eighthIndex < discard.size(); eighthIndex++) {
+                                                                    if (randomCard == discard.get(elementPointer8)) {
+                                                                        randomCard = random.nextInt(max - min + 1) + min;
+                                                                        elementPointer8++;
+                                                                        for (int ninthIndex = 0; ninthIndex < discard.size(); ninthIndex++) {
+                                                                            if (randomCard == discard.get(elementPointer9)) {
+                                                                                randomCard = random.nextInt(max - min + 1) + min;
+                                                                                elementPointer9++;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
+
         System.out.println("Card that was picked: " + randomCard);
         int cardValue = Integer.parseInt(values.get(randomCard).get(1));
-        String picChoice = values.get(randomCard).get(3);
+        int aceCheck = Integer.parseInt(values.get(randomCard).get(2));
+        picChoice = values.get(randomCard).get(3);
         System.out.println("Picture filename: " + picChoice);
-        if (draw){
-            dealerCount = dealerCount + cardValue;
-            dealerHand.add(picChoice);
+        if (aceCheck == 1 && !draw){
+            playerIsAce = true;
+            playerAceCount++;
+            changed = false;
         }
+        if (aceCheck == 1 && draw) {
+            dealerIsAce = true;
+            dealerAceCount++;
+            changed = false;
+        }
+        //if(playerCount > 21 && playerAceCount > 0){
+            //playerIsAce = true;
+        //}
+       //if(dealerCount > 21 && dealerAceCount > 0){
+            //dealerIsAce = true;
+        //}
+        // Adds to the player's count.
         if (!draw) {
             playerCount = playerCount + cardValue;
             playerHand.add(picChoice);
+            playerCardCounter++;
+            GameWindows.playerCardTotal = playerCount;
+            GameWindows.playerCount.setText("Player Count: " + playerCount);
         }
+        // Adds to the dealer's count.
+        if (draw){
+            dealerCount = dealerCount + cardValue;
+            dealerHand.add(picChoice);
+            dealerCardCounter++;
+            GameWindows.dealerCardTotal = dealerCount;
+        }
+
+        if(dealerCardCounter == 1 && draw){
+            faceDownCard = picChoice;
+            picChoice = "Blackjack Card Images\\faceDown.png";
+        }
+        GameWindows.playerCount.setText("Player: " + playerCount);
+
+
+
+        ImageHandler.imagePicker(picChoice, draw, false, dealerCardCounter, playerCardCounter);
         discard.add(randomCard);
-        if (playerCount > 21 || dealerCount > 21){
-            bust = true;
-        }
-        int Ace = Integer.parseInt(values.get(randomCard).get(2));
-        if (Ace == 1 && draw) {
-            dealerIsAce = true;
-        }
-        if (Ace == 1 && !draw){
-            playerIsAce = true;
-        }
-        aceCount++;
-        if (bust) {
-            if (playerIsAce || dealerIsAce) {
-                if (draw) {
-                    dealerCount = dealerCount - (aceCount * 10);
-                } else {
-                    playerCount = playerCount - (aceCount * 10);
-                }
+        //Stores the path for the dealer's face down card and switches it with the face down image
+
+        // Changes the count of an ace from 11 to 1 if the dealer has busted.
+
+        if (dealerCount > 21 && dealerIsAce && draw){
+            dealerCount = dealerCount - 10;
+            dealerAceCount --;
+            if (dealerAceCount == 0){
+                dealerIsAce = false;
             }
         }
-        if (playerCount < 21 && dealerCount < 21){
-            bust = false;
+
+        // Changes the count of an ace from 11 to 1 if the player has busted
+
+        else if (playerCount > 21 && playerIsAce && !draw) {
+            playerCount = playerCount - 10;
+            playerAceCount --;
+            if (playerAceCount == 0){
+                playerIsAce = false;
+            }
         }
-        if (playerCount > 21 || dealerCount > 21){
-            roundOver = true;
-            gameOver();
+
+        //Handles logic when player got blackjack but did not stand
+        if(!playerStand && dealerCardCounter >= 2){
+            if(playerCount > 21) {
+                gameOverTriggered = true;
+                whoWon();
+            }
+            else if (playerCount == 21 && dealerCount < 17){
+                ImageHandler.imagePicker(Blackjack.faceDownCard, Blackjack.draw, true, Blackjack.dealerCardCounter, Blackjack.playerCardCounter);
+                GameWindows.dealerCount.setText("Dealer: " + dealerCount);
+                GameWindows.playerCount.setText("Player: " + playerCount);
+                dealerAI();
+            }
+            else if ((dealerCount >= 17 || dealerCount == playerCount) && playerCount == 21)
+            {
+                ImageHandler.imagePicker(Blackjack.faceDownCard, Blackjack.draw, true, Blackjack.dealerCardCounter, Blackjack.playerCardCounter);
+                GameWindows.dealerCount.setText("Dealer: " + dealerCount);
+                GameWindows.playerCount.setText("Player: " + playerCount);
+                whoWon();
+            }
         }
+
+        //Handles logic when the player stands and the dealer has drawn another card
+        if (playerStand && dealerCardCounter >= 2){
+            GameWindows.dealerCount.setText("Dealer: " + dealerCount);
+            if (dealerCount > playerCount){
+                whoWon();
+            }
+            else if(playerCount > dealerCount && dealerCount >=17){
+                whoWon();
+            }
+            else if (dealerCount < 17){
+                dealerAI();
+            }
+            else {
+                whoWon();
+            }
+
+        }
+
+
+        //Some Test Code
+        System.out.println("Player's Count: " + playerCount);
+        System.out.println("Dealer's Count: " + dealerCount);
+    }
+    public static void delay(int duration) {
+        //duration is equal to time in milliseconds (Ex. 1000 = 1 second)
+        long start = System.currentTimeMillis();
+        while(start >= System.currentTimeMillis() - duration); // do nothing
+    }
+    public static void soundEffect() throws LineUnavailableException, IOException {
+
+        try {
+            Blackjack.delay(400);
+            Main.playMusic(3);
+            Blackjack.delay(450);
+            Main.playMusic(3);
+            Blackjack.delay(450);
+            Main.playMusic(3);
+            Blackjack.delay(450);
+            Main.playMusic(3);
+            Blackjack.delay(450);
+        } catch (LineUnavailableException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void whoWon(){
+        GameWindows.playerCount.setText("Player: " + playerCount);
+        if(playerCount > 21){
+            GameWindows.announcer.setTranslateX(220);
+            GameWindows.announcer.setText("You Busted!");
+        }
+        else if(dealerCount > playerCount && dealerCount <=21){
+            GameWindows.announcer.setTranslateX(250);
+            GameWindows.announcer.setText("You Lose!");
+            playerCash = playerCash + (Blackjack.betAmount * 2);
+        }
+        else if(playerCount > dealerCount){
+            GameWindows.announcer.setTranslateX(250);
+            GameWindows.announcer.setText("You Win!");
+            playerCash = playerCash + (Blackjack.betAmount * 2);
+        }
+        else if(dealerCount > playerCount){
+            GameWindows.announcer.setTranslateX(250);
+            GameWindows.announcer.setText("You Win!");
+            playerCash = playerCash + (Blackjack.betAmount * 2);
+        }
+        else {
+            GameWindows.announcer.setTranslateX(290);
+            GameWindows.announcer.setText("PUSH");
+            playerCash = playerCash + Blackjack.betAmount;
+        }
+
+        GameWindows.playAgain("Hi", "Play Again?");
+
+        //GameWindows.dealerCount.setText("Dealer: " + dealerCount);
     }
 }
