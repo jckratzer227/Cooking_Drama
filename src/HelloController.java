@@ -30,9 +30,9 @@ import static Cooking.ShopClassLogic.*;
 public class HelloController{
 
     @FXML
-    public static Text FloorplanConfirmationText;
+    public Text FloorplanConfirmationText;
     @FXML
-    public static Text MenuConfirmationText;
+    public Text MenuConfirmationText;
     @FXML
     private Text cookingCoinsText;
     @FXML
@@ -53,19 +53,32 @@ public class HelloController{
             Shop();
         }
         if (cookingCoinsText != null) {
-            updateCookingCoinsText();
+            cookingCoinsText.setText("" + Player.getCookingCoins());
         }
     }
 
-    @FXML
-    public void updateCookingCoinsText(){
-        cookingCoinsText.setText("" + Player.getCookingCoins());
-    }
     public void buyItem(String string){
         Item item = findItem(string);
-        if (item != null && Player.getCookingCoins() >= item.getPrice()) {
-            ShopClassLogic.buyItem(item);
-            updateCookingCoinsText();
+        if (item != null) {
+                if (Player.getCookingCoins() >= item.getPrice())
+                {
+                    ShopClassLogic.buyItem(item);
+                    cookingCoinsText.setText("" + Player.getCookingCoins());
+                    if(item instanceOf Recipe){
+                        MenuConfirmationText.setText("New recipe unlocked! Yippee!");
+                    }
+                    else{
+                        FloorplanConfirmationText.setText("New floorplan unlocked! Yippee!");
+                    }
+                }
+                else{
+                    MenuConfirmationText.setText("Not enough funds");
+                    FloorplanConfirmationText.setText("Not enough funds");
+                }
+            else{
+                MenuConfirmationText.setText("Looks like we're out of stock");
+                FloorplanConfirmationText.setText("Looks like we're out of stock");
+            }
         }
     }
 
